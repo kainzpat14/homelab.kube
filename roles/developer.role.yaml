@@ -5,6 +5,9 @@ metadata:
   name: developer
 rules:
 - apiGroups: [""] # "" indicates the core API group
-  resources: ["pods","deployments","services"]
+  resources: ["pods","services"]
+  verbs: ["get", "watch", "list","create","update","delete"]
+- apiGroups: ["apps"] # "" indicates the core API group
+  resources: ["deployments","replicasets"]
   verbs: ["get", "watch", "list","create","update","delete"]
 
