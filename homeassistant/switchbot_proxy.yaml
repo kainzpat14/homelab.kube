@@ -1,0 +1,45 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: switchbot-proxy
+  labels:
+    app: switchbot_proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: switchbot_proxy
+  template:
+    metadata:
+      labels:
+        app: switchbot_proxy
+    spec:
+      containers:
+        - name: switchbot-proxy
+          image: ghcr.io/kainzpat14/switchbot_proxy:latest
+          ports:
+            - containerPort: 8080
+          env:
+          - name: SECURITY_API_KEYS
+            value: dad37282-0f8c-47fe-9293-545f254bb716
+          - name: SWITCHBOT_SECRET
+            value: ad24e15bfe26a9b81e1381dcdf3cba2d
+          - name: SWITCHBOT_TOKEN
+            value: a54dac8d52519f328f25b3af6f886edbad403758866dc3e1a1ba2012b848a8b2c8edf3eb039e1b5e1b8179f3bfa28158
+          - name: SWITCHBOT_WEBHOOK_URL
+            value: https://switchbot-proxy.kuk-it.eu/deviceStatusCollector
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: switchbot-proxy
+spec:
+  type: ClusterIP
+  selector:
+    app: switchbot_proxy
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
